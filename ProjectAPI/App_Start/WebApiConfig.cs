@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-
+using System.Web.Http.Cors;
 namespace ProjectAPI
 {
+    /// <summary>
+    /// WebApiConfig static class
+    /// </summary>
     public static class WebApiConfig
     {
+        /// <summary>
+        /// WebAPI class-configurtor
+        /// </summary>
+        /// <param name="config"></param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
@@ -19,6 +26,11 @@ namespace ProjectAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
+
+
         }
     }
 }
