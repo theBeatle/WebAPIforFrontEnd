@@ -57,18 +57,19 @@ namespace ProjectAPI.Controllers
         [HttpPut]
         [Route("UpdateWorker/{id}")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutWorker([FromUri] int id, [FromBody] Worker worker)
+        public IHttpActionResult PutWorker(int? id, Worker worker)
         {
+            if (id == null)
+                return NotFound();
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             if (id != worker.Id)
             {
                 return BadRequest();
             }
-
             db.Entry(worker).State = EntityState.Modified;
 
             try
@@ -77,7 +78,7 @@ namespace ProjectAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WorkerExists(id))
+                if (!WorkerExists(id.Value))
                 {
                     return NotFound();
                 }
